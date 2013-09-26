@@ -17,6 +17,9 @@ html * {
   color-profile: sRGB;
   rendering-intent: auto; }
 
+.reveal .hero {
+  font-size: 400px; }
+
 /*********************************************
  * GLOBAL STYLES
  *********************************************/

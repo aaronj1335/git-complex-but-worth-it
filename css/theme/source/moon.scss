@@ -62,6 +62,12 @@ $linkColorHover: lighten( $linkColor, 20% );
 $selectionBackgroundColor: $magenta;
 
 
+.reveal {
+  .hero {
+    font-size: 400px;
+  }
+}
+
 
 // Theme template ------------------------------
 @import "../template/theme";
