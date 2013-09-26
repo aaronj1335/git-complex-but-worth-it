@@ -62,9 +62,16 @@ $linkColorHover: lighten( $linkColor, 20% );
 $selectionBackgroundColor: $magenta;
 
 
-.reveal {
+.reveal.git {
   .hero {
     font-size: 400px;
+  }
+
+  section img {
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+    margin: 0;
   }
 }
 

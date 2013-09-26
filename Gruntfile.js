@@ -10,7 +10,7 @@ module.exports = function(grunt) {
     cssmin: {
       compress: {
         files: {
-          'css/reveal.min.css': [ 'css/reveal.css' ]
+          'css/reveal.min.css': ['css/reveal.css']
         }
       }
     },
@@ -32,7 +32,7 @@ module.exports = function(grunt) {
 
     jshint: {
       options: JSON.parse(fs.readFileSync('.jshintrc')),
-      files: [ 'Gruntfile.js', 'js/reveal.js' ]
+      files: ['Gruntfile.js']
     },
 
     connect: {
@@ -58,11 +58,11 @@ module.exports = function(grunt) {
 
     watch: {
       main: {
-        files: [ 'Gruntfile.js', 'js/reveal.js', 'css/reveal.css' ],
+        files: ['Gruntfile.js', 'js/reveal.js', 'css/reveal.css'],
         tasks: 'default'
       },
       theme: {
-        files: [ 'css/theme/source/*.scss', 'css/theme/template/*.scss' ],
+        files: ['css/theme/source/*.scss', 'css/theme/template/*.scss'],
         tasks: 'themes'
       }
     }
@@ -70,25 +70,24 @@ module.exports = function(grunt) {
   });
 
   // Dependencies
-  grunt.loadNpmTasks( 'grunt-contrib-qunit' );
-  grunt.loadNpmTasks( 'grunt-contrib-jshint' );
-  grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
-  grunt.loadNpmTasks( 'grunt-contrib-uglify' );
-  grunt.loadNpmTasks( 'grunt-contrib-watch' );
-  grunt.loadNpmTasks( 'grunt-contrib-sass' );
-  grunt.loadNpmTasks( 'grunt-contrib-connect' );
-  grunt.loadNpmTasks( 'grunt-zip' );
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-zip');
 
   // Default task
-  grunt.registerTask( 'default', [ 'jshint', 'cssmin', 'qunit' ] );
+  grunt.registerTask('default', ['jshint', 'cssmin']);
 
   // Theme task
-  grunt.registerTask( 'themes', [ 'sass' ] );
+  grunt.registerTask('themes', ['sass']);
 
   // Package presentation to archive
-  grunt.registerTask( 'package', [ 'default', 'zip' ] );
+  grunt.registerTask('package', ['default', 'zip']);
 
   // Serve presentation locally
-  grunt.registerTask( 'serve', [ 'connect', 'watch' ] );
+  grunt.registerTask('serve', ['connect', 'watch']);
 };
 

@@ -17,8 +17,13 @@ html * {
   color-profile: sRGB;
   rendering-intent: auto; }
 
-.reveal .hero {
+.reveal.git .hero {
   font-size: 400px; }
+.reveal.git section img {
+  border: none;
+  background-color: transparent;
+  box-shadow: none;
+  margin: 0; }
 
 /*********************************************
  * GLOBAL STYLES
