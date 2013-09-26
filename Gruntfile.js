@@ -7,11 +7,6 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-    // Tests will be added soon
-    qunit: {
-      files: [ 'test/*.html' ]
-    },
-
     cssmin: {
       compress: {
         files: {
@@ -95,8 +90,5 @@ module.exports = function(grunt) {
 
   // Serve presentation locally
   grunt.registerTask( 'serve', [ 'connect', 'watch' ] );
-
-  // Run tests
-  grunt.registerTask( 'test', [ 'jshint', 'qunit' ] );
-
 };
+
