@@ -1,3 +1,5 @@
+var fs = require('fs');
+
 /* global module:false */
 module.exports = function(grunt) {
   var port = grunt.option('port') || 8000;
@@ -34,24 +36,7 @@ module.exports = function(grunt) {
     },
 
     jshint: {
-      options: {
-        curly: false,
-        eqeqeq: true,
-        immed: true,
-        latedef: true,
-        newcap: true,
-        noarg: true,
-        sub: true,
-        undef: true,
-        eqnull: true,
-        browser: true,
-        expr: true,
-        globals: {
-          head: false,
-          module: false,
-          console: false
-        }
-      },
+      options: JSON.parse(fs.readFileSync('.jshintrc')),
       files: [ 'Gruntfile.js', 'js/reveal.js' ]
     },
 
