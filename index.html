@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>reveal.js - The HTML Presentation Framework</title>
+
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/moon.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal git">
+
+      <div class="slides">
+        <section>
+          <h1 class=hero>git</h1>
+          <h3>complex, but worth it</h3>
+
+          <aside class=notes>
+ - some of you are going to start jobs (or are in jobs) where you'll use it every day
+ - so obviously this is going to be relevant to you
+ - some of you are going to use another version control system
+ - some of you aren't even going to be programmers
+   - project managers
+   - product people
+   - QA
+ - it's important regardless
+ - it's key to understanding how engineering teams work
+ - your capacity to be effective hinges on your understanding of this process
+ - it's funny because it actually matters more than your knowledge of sorting algorithms
+          </aside>
+        </section>
+
+        <section>
+          <h1>aaron stacy</h1>
+          <h3>frontend engineer</h3>
+          <h2>
+            @ <a href=http://www.waterfallmobile.com>waterfall mobile</a>
+          </h2>
+
+          <aside class=notes>
+ - i'm also getting my master's degree in CS here
+ - i've been working as a software engineer for about 4 years
+ - so i've got some experience
+ - but not too much that i don't remember being where you're at
+ - when all of this was still foreign to me
+          </aside>
+        </section>
+
+        <section>
+          <h1>
+            waterfall is
+            <a href="http://careers.stackoverflow.com/company/waterfall-mobile">hiring</a>!
+          </h1>
+
+          <aside class=notes>
+ - we're a little company downtown on west 6th
+ - also based in SF
+ - really fun, challenging culture
+ - working on a bunch of cutting edge tech
+   - java platform
+   - backed by mongodb
+   - osgi
+   - modern javascript webapp
+   - twitter bootstrap
+   - jquery
+   - node.js
+ - we have a lot of fun too
+   - friends give me a hard time
+   - the other week i was actually getting paid to drink beer at a giants game
+          </aside>
+        </section>
+
+        <section>
+          <h2>terminology</h2>
+
+          <ul>
+            <li class=fragment>vcs == source control</li>
+            <li class=fragment>git != github</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>motivation</h2>
+
+          <p class=fragment>
+            we <strike>shouldn't</strike> can't do our job without source control
+          </p>
+
+          <p class=fragment>
+            the joel test:
+            <a href="http://www.joelonsoftware.com/articles/fog0000000043.html">
+              point #1
+            </a>
+          </p>
+
+          <p class=fragment>
+            to understand why, understand how we got here
+          </p>
+
+          <aside class=notes>
+ - we can't/shouldn't do our jobs without source control
+ - don't believe me, believe spolsky
+ - to understand why, it's important to understand how we got here
+ - the problem is our minds are like sponges
+   - they soak up info
+   - and then they leak it out
+ - programmers were getting frustrated because they didn't know who did what when
+          </aside>
+        </section>
+
+        <section>
+          <h2>generation #1: tracking changes</h2>
+
+          <ul>
+            <li class=fragment>focused on one file at a time</li>
+            <li class=fragment>all local to your machine</li>
+            <li class=fragment>rcs, sccs</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>generation #2: sharing</h2>
+
+          <ul>
+            <li class=fragment>centralized "repositories"</li>
+            <li class=fragment>worked with directory trees</li>
+            <li class=fragment>networked</li>
+            <li class=fragment>svn, cvs, sourcesafe, tfs</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>but concurrency is hard</h2>
+
+          <ul>
+            <li class=fragment>
+              hard for humans just like computers
+
+              <ul>
+                <li class=fragment>multi-core processors</li>
+                <li class=fragment>the mythical man-month</li>
+              </ul>
+            </li>
+            <li class=fragment>context switching</li>
+            <li class=fragment>context merging</li>
+          </ul>
+
+          <aside class=notes>
+ - quick anecdote
+ - when multi-core processors became common and OS's rolled out support for them
+ - the best case speed-up was 2x (for a dual core)
+ - the worst case is 1x (none)
+ - what they observed was actually worse performance
+ - because of things like:
+   - cache line bouncing
+   - page table thrashing
+   - lock contention overhead
+ - similar phenomenon was observed in humans
+   - in a book from 1975
+   - adding more people doesn't always speed things up
+ - one thing that's hard: context switching
+   - it's easier to finish an assignment all at once
+   - than to go back and forth
+ - even harder: context merging
+   - you're working with a partner on two separate parts of a project
+   - headaches when it's time to integrate them together
+ - so source control systems that just track changes aren't sufficient
+ - so and just sharing those changes isn't sufficient
+ - we needed tools that help us switch and merge contexts as well
+          </aside>
+        </section>
+
+        <section>
+          <h2>generation #3: distributed vcs</h2>
+
+          <ul>
+            <li class=fragment>everyone has a copy of the entire history</li>
+            <li class=fragment>change-set oriented</li>
+            <li class=fragment>branching and merging are primary concerns</li>
+            <li class=fragment>git, mercurial, bazaar, bitkeeper, darcs</li>
+          </ul>
+
+          <aside class=notes>
+ - from a high level
+ - these systems made context switching and merging a design goal from the start
+ - several architectural differences:
+   - everyone has the full repo
+     - no longer a central point of contention
+     - local operations are always faster
+     - so it allows you to do more things locally
+   - changeset oriented
+     - instead of thinking about versions
+     - everything is just incremental steps from here to there
+     - this becomes important for quickly changing contexts
+   - branching is a primary concern
+     - by that i mean they are both fast and easy
+     - they're also really flexible
+       - can be local
+       - or public if they're on a central, shared repo
+         - but you can choose to ignore them
+          </aside>
+        </section>
+
+        <section>
+          <h2>git vs. &lt;something else&gt;</h2>
+
+          <ul>
+            <li class=fragment>generally considered very fast</li>
+            <li class=fragment>
+              it doesn't try to be too intelligent
+              <img src=/img/git-is-stupid.png />
+            </li>
+            <li class=fragment>many find it less intuitive</li>
+          </ul>
+
+          <aside class=notes>
+ - faster than centralized vcs (svn, cvs) because local is faster
+ - written in C by sharp systems programmers
+ - it's less correct than bazaar about file renaming
+ - it's less intelligent about change dependencies than darcs
+ - most people prefer to trade the performance for these features
+          </aside>
+        </section>
+
+        <section>
+          <h3>the most important part: the social side</h3>
+
+          <ul>
+            <li class=fragment>git has a huge community with tons of momentum</li>
+            <li class=fragment>it's good to be involved in a vibrant developer community</li>
+            <li class=fragment>
+              post your projects online
+
+              <ul>
+                <li class=fragment>don't wait until they're perfect!</li>
+              </ul>
+            </li>
+          </ul>
+
+          <aside class=notes>
+ - when we get a candidate for a developer position
+ - the first thing i look at is not their resume
+ - it's their code online
+ - cause you can say anything on a resume
+ - but reading your code tells me a lot
+   - where you have expertise
+   - how much you actually did on a project
+   - if you're good at choosing tools
+   - if you contribute back to projects with bugfixes
+   - if you're polite
+ - and once again, if you're not a programmer, this is a good way to find them
+          </aside>
+        </section>
+
+        <section>
+          <h2>alright let's draw</h2>
+
+          <ul>
+            <li class=fragment>a git repo is a DAG</li>
+            <li class=fragment>like a tree where branches grow back into each other</li>
+            <li class=fragment>
+              commits are the vertices
+
+              <ul>
+                <li class=fragment>snapshots</li>
+                <li class=fragment>diff's (incremental change sets)</li>
+                <li class=fragment>tracked by sha1 hashes, not version numbers</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>branches</h2>
+
+          <ul>
+            <li class=fragment>branches are just pointers or references to commits</li>
+            <li class=fragment>the main one is called master</li>
+            <li class=fragment>but there's not actually anything special about it</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>checkouts</h2>
+
+          <ul>
+            <li class=fragment>special pointer to your current branch: HEAD</li>
+            <li class=fragment>staging area of what you're about to commit: index</li>
+            <li class=fragment>working copy: everything outside of <code>.git</code></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>remotes</h2>
+
+          <ul>
+            <li class=fragment>could be on the same file system or another machine</li>
+            <li class=fragment>
+              can be accessed over different protocols
+              (<code>http</code>|<code>ssh</code>|<code>git</code>)
+            </li>
+            <li class=fragment>main remote is called origin</li>
+            <li class=fragment>remotes are basically just URL's</li>
+            <li class=fragment>remote tracking branches</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>commits</h2>
+
+          <ul>
+            <li class=fragment>change your working copy</li>
+            <li class=fragment><code>git add</code> adds it to the index</li>
+            <li class=fragment>
+              <code>git commit</code> creates a new vertex in your repo's tree
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>fetching and merging</h2>
+
+          <ul>
+            <li class=fragment>fetching just adds vertices from a remote</li>
+            <li class=fragment>
+              merging is just moving the branch pointers together
+
+              <ul>
+                <li class=fragment>(and usually updating the HEAD)</li>
+              </ul>
+            </li>
+            <li class=fragment>
+              it happens one of two ways:
+
+              <ul>
+                <li class=fragment>fast-forward</li>
+                <li class=fragment>three-way merge</li>
+              </ul>
+            </li>
+            <li class=fragment>pull: fetch + merge</li>
+            <li class=fragment>push: inverse fetch + merge</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>crazy next-level stuff #1: feature branches</h3>
+
+          <ul>
+            <li class=fragment>you're working on a feature that takes a while</li>
+            <li class=fragment>you find out there's some massively horrible bug</li>
+            <li class=fragment>put all of your feature work in a separate branch</li>
+            <li class=fragment>do the bugfix and push it to production</li>
+            <li class=fragment>and pick up where you left off</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>
+            crazy next-level stuff #2:
+            <a href="http://tomayko.com/writings/the-thing-about-git">
+              tangled working copy
+            </a>
+          </h3>
+
+          <ul>
+            <li class=fragment>find a bug while you're doing something else</li>
+            <li class=fragment>you fix the bug</li>
+            <li class=fragment>but you don't want to commit it with the other thing</li>
+            <li class=fragment><code>git add --interactive</code></li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>crazy next-level stuff #3: async development</h3>
+
+          <ul>
+            <li class=fragment>one team member is responsible for the database</li>
+            <li class=fragment>one is responsible for the UI</li>
+            <li class=fragment>in a perfect world, do the database work first, then the UI</li>
+            <li class=fragment>in the real world, stuff is forgotten, miscommunicated, etc.</li>
+            <li class=fragment>shared git branch allows you to pass this work back and forth</li>
+            <li class=fragment>rest of the team doesn't see the half-baked change</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>how do people actually use it?</h2>
+
+          <ul>
+            <li class=fragment>git is incredibly flexible</li>
+            <li class=fragment>"framework for workflows"</li>
+            <li class=fragment>can be confusing, but some notable patterns are emerging</li>
+            <li class=fragment>note: there's always one central git repo</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>
+            <a href="http://nvie.com/posts/a-successful-git-branching-model/">
+              git flow
+            </a>
+          </h2>
+
+          <ul>
+            <li class=fragment>
+              two main branches:
+
+              <ul>
+                <li class=fragment>develop: push to this any time you finish something</li>
+                <li class=fragment>master: should always be deployable</li>
+              </ul>
+            </li>
+
+            <li class=fragment>
+              other short-lived branches:
+
+              <ul>
+                <li class=fragment>feature branches: kept local unless needed to share</li>
+                <li class=fragment>
+                  release branches:
+
+                  <ul>
+                    <li class=fragment>start these shortly prior to release</li>
+                    <li class=fragment>usually deployed to a staging area</li>
+                    <li class=fragment>only bugfixes are committed</li>
+                    <li class=fragment>merged back into development</li>
+                  </ul>
+                </li>
+
+                <li class=fragment>hotfix branches</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <img src="/img/git-flow.png" />
+
+          <p>
+            (<a href="http://nvie.com/posts/a-successful-git-branching-model/">source</a>)
+          </p>
+
+          <aside class=notes>
+ - note that your tree will never look like this :)
+ - lots of great tools and writing out there about this approach
+ - big complaint: this is complicated
+          </aside>
+        </section>
+
+        <section>
+          <h2>
+            <a href="http://scottchacon.com/2011/08/31/github-flow.html">
+              github flow
+            </a>
+          </h2>
+
+          <ul>
+            <li class=fragment>one branch: master</li>
+            <li class=fragment>master is always deployable</li>
+            <li class=fragment>
+              features and bugs all happen in descriptive branches off of master
+            </li>
+            <li class=fragment>
+              usually involves rigorous code reviews
+
+              <ul>
+                <li class=fragment>github pull requests work well for this</li>
+                <li class=fragment>forking also supports this process</li>
+              </ul>
+            </li>
+            <li class=fragment>deploy immediately after review</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>trade-offs</h2>
+
+          <ul>
+            <li class=fragment>
+              github flow is simpler
+
+              <ul>
+                <li class=fragment>&hellip;to learn</li>
+                <li class=fragment>&hellip;to build (graphical) tools for</li>
+                <li class=fragment>&hellip;to screw up production</li>
+              </ul>
+            </li>
+
+            <li class=fragment>
+              github flow requires a greater understanding of the code
+
+              <ul>
+                <li class=fragment>every merge you need to know it doesn't break things</li>
+                <li class=fragment>less appropriate for legacy code</li>
+              </ul>
+            </li>
+
+            <li class=fragment>github flow allows you to move faster</li>
+
+            <li class=fragment>if you've got multiple deployments, you need git flow</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>(you probably don't need git flow for school)</h3>
+        </section>
+
+        <section>
+          <h1>thanks!</h1>
+
+          <h3>
+            @aaronj1335 on
+            <a href="https://twitter.com/aaronj1335">
+              <i class=icon-twitter></i>
+            </a>
+            and
+            <a href="https://github.com/aaronj1335">
+              <i class=icon-github-circled></i>
+            </a>
+          </h3>
+
+          <h3>
+            don't forget
+            <a href="http://careers.stackoverflow.com/company/waterfall-mobile">
+              waterfall is hiring!
+            </a>
+          </h3>
+
+          <h1>questions?</h1>
+        </section>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: false,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: 'linear', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>
