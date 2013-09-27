@@ -49,8 +49,8 @@
    - QA
  - it's important regardless
  - it's key to understanding how engineering teams work
- - your capacity to be effictive hinges on your understanding of this process
- - it's funny b/c it actually matters more than your knowledge of sorting algorithms
+ - your capacity to be effective hinges on your understanding of this process
+ - it's funny because it actually matters more than your knowledge of sorting algorithms
           </aside>
         </section>
 
@@ -128,7 +128,7 @@
  - the problem is our minds are like sponges
    - they soak up info
    - and then they leak it out
- - programmers were getting frustrated b/c they didn't know who did what when
+ - programmers were getting frustrated because they didn't know who did what when
           </aside>
         </section>
 
@@ -146,7 +146,7 @@
           <h2>generation #2: sharing</h2>
 
           <ul>
-            <li class=fragment>centrailized "repositories"</li>
+            <li class=fragment>centralized "repositories"</li>
             <li class=fragment>worked with directory trees</li>
             <li class=fragment>networked</li>
             <li class=fragment>svn, cvs, sourcesafe, tfs</li>
@@ -158,10 +158,10 @@
 
           <ul>
             <li class=fragment>
-              hard for humans just like coputers
+              hard for humans just like computers
 
               <ul>
-                <li class=fragment>multicore processors</li>
+                <li class=fragment>multi-core processors</li>
                 <li class=fragment>the mythical man-month</li>
               </ul>
             </li>
@@ -171,7 +171,7 @@
 
           <aside class=notes>
  - quick anecdote
- - when multicore processors became common and OS's rolled out support for them
+ - when multi-core processors became common and OS's rolled out support for them
  - the best case speed-up was 2x (for a dual core)
  - the worst case is 1x (none)
  - what they observed was actually worse performance
@@ -270,17 +270,18 @@
    - where you have expertise
    - how much you actually did on a project
    - if you're good at choosing tools
-   - if you contribute back to projects w/ bugfixes
+   - if you contribute back to projects with bugfixes
    - if you're polite
  - and once again, if you're not a programmer, this is a good way to find them
           </aside>
         </section>
 
         <section>
-          <h2>a git repo is a DAG</h2>
+          <h2>alright let's draw</h2>
 
           <ul>
-            <li class=fragment>like a tree where branches grow back into eachother</li>
+            <li class=fragment>a git repo is a DAG</li>
+            <li class=fragment>like a tree where branches grow back into each other</li>
             <li class=fragment>
               commits are the vertices
 
@@ -317,7 +318,7 @@
           <h2>remotes</h2>
 
           <ul>
-            <li class=fragment>could be on the same filesystem or another machine</li>
+            <li class=fragment>could be on the same file system or another machine</li>
             <li class=fragment>
               can be accessed over different protocols
               (<code>http</code>|<code>ssh</code>|<code>git</code>)
@@ -406,6 +407,151 @@
           </ul>
         </section>
 
+        <section>
+          <h2>how do people actually use it?</h2>
+
+          <ul>
+            <li class=fragment>git is incredibly flexible</li>
+            <li class=fragment>"framework for workflows"</li>
+            <li class=fragment>can be confusing, but some notable patterns are emerging</li>
+            <li class=fragment>note: there's always one central git repo</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>
+            <a href="http://nvie.com/posts/a-successful-git-branching-model/">
+              git flow
+            </a>
+          </h2>
+
+          <ul>
+            <li class=fragment>
+              two main branches:
+
+              <ul>
+                <li class=fragment>develop: push to this any time you finish something</li>
+                <li class=fragment>master: should always be deployable</li>
+              </ul>
+            </li>
+
+            <li class=fragment>
+              other short-lived branches:
+
+              <ul>
+                <li class=fragment>feature branches: kept local unless needed to share</li>
+                <li class=fragment>
+                  release branches:
+
+                  <ul>
+                    <li class=fragment>start these shortly prior to release</li>
+                    <li class=fragment>usually deployed to a staging area</li>
+                    <li class=fragment>only bugfixes are committed</li>
+                    <li class=fragment>merged back into development</li>
+                  </ul>
+                </li>
+
+                <li class=fragment>hotfix branches</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <img src="/img/git-flow.png" />
+
+          <p>
+            (<a href="http://nvie.com/posts/a-successful-git-branching-model/">source</a>)
+          </p>
+
+          <aside class=notes>
+ - note that your tree will never look like this :)
+ - lots of great tools and writing out there about this approach
+ - big complaint: this is complicated
+          </aside>
+        </section>
+
+        <section>
+          <h2>
+            <a href="http://scottchacon.com/2011/08/31/github-flow.html">
+              github flow
+            </a>
+          </h2>
+
+          <ul>
+            <li class=fragment>one branch: master</li>
+            <li class=fragment>master is always deployable</li>
+            <li class=fragment>
+              features and bugs all happen in descriptive branches off of master
+            </li>
+            <li class=fragment>
+              usually involves rigorous code reviews
+
+              <ul>
+                <li class=fragment>github pull requests work well for this</li>
+                <li class=fragment>forking also supports this process</li>
+              </ul>
+            </li>
+            <li class=fragment>deploy immediately after review</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>trade-offs</h2>
+
+          <ul>
+            <li class=fragment>
+              github flow is simpler
+
+              <ul>
+                <li class=fragment>&hellip;to learn</li>
+                <li class=fragment>&hellip;to build (graphical) tools for</li>
+                <li class=fragment>&hellip;to screw up production</li>
+              </ul>
+            </li>
+
+            <li class=fragment>
+              github flow requires a greater understanding of the code
+
+              <ul>
+                <li class=fragment>every merge you need to know it doesn't break things</li>
+                <li class=fragment>less appropriate for legacy code</li>
+              </ul>
+            </li>
+
+            <li class=fragment>github flow allows you to move faster</li>
+
+            <li class=fragment>if you've got multiple deployments, you need git flow</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>(you probably don't need git flow for school)</h3>
+        </section>
+
+        <section>
+          <h1>thanks!</h1>
+
+          <h3>
+            @aaronj1335 on
+            <a href="https://twitter.com/aaronj1335">
+              <i class=icon-twitter></i>
+            </a>
+            and
+            <a href="https://github.com/aaronj1335">
+              <i class=icon-github-circled></i>
+            </a>
+          </h3>
+
+          <h3>
+            don't forget
+            <a href="http://careers.stackoverflow.com/company/waterfall-mobile">
+              waterfall is hiring!
+            </a>
+          </h3>
+
+          <h1>questions?</h1>
+        </section>
       </div>
     </div>
 

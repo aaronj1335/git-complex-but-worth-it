@@ -10,50 +10,72 @@ var RevealNotes = (function() {
 		var notesPopup = window.open( jsFileLocation + 'notes.html', 'reveal.js - Notes', 'width=1120,height=850' );
 
 		// Fires when slide is changed
-		Reveal.addEventListener( 'slidechanged', post );
+		Reveal.addEventListener( 'slidechanged', function( event ) {
+			post('slidechanged');
+		} );
 
 		// Fires when a fragment is shown
-		Reveal.addEventListener( 'fragmentshown', post );
+		Reveal.addEventListener( 'fragmentshown', function( event ) {
+			post('fragmentshown');
+		} );
 
 		// Fires when a fragment is hidden
-		Reveal.addEventListener( 'fragmenthidden', post );
+		Reveal.addEventListener( 'fragmenthidden', function( event ) {
+			post('fragmenthidden');
+		} );
 
 		/**
 		 * Posts the current slide data to the notes window
+		 *
+		 * @param {String} eventType Expecting 'slidechanged', 'fragmentshown' 
+		 * or 'fragmenthidden' set in the events above to define the needed 
+		 * slideDate.
 		 */
-		function post() {
+		function post( eventType ) {
 			var slideElement = Reveal.getCurrentSlide(),
-				slideIndices = Reveal.getIndices(),
 				messageData;
 
-			var notes = slideElement.querySelector( 'aside.notes' ),
-				nextindexh,
-				nextindexv;
+			if( eventType === 'slidechanged' ) {
+				var notes = slideElement.querySelector( 'aside.notes' ),
+					indexh = Reveal.getIndices().h,
+					indexv = Reveal.getIndices().v,
+					nextindexh,
+					nextindexv;
 
-			if( slideElement.nextElementSibling && slideElement.parentNode.nodeName == 'SECTION' ) {
-				nextindexh = slideIndices.h;
-				nextindexv = slideIndices.v + 1;
-			} else {
-				nextindexh = slideIndices.h + 1;
-				nextindexv = 0;
+				if( slideElement.nextElementSibling && slideElement.parentNode.nodeName == 'SECTION' ) {
+					nextindexh = indexh;
+					nextindexv = indexv + 1;
+				} else {
+					nextindexh = indexh + 1;
+					nextindexv = 0;
+				}
+
+				messageData = {
+					notes : notes ? notes.innerHTML : '',
+					indexh : indexh,
+					indexv : indexv,
+					nextindexh : nextindexh,
+					nextindexv : nextindexv,
+					markdown : notes ? typeof notes.getAttribute( 'data-markdown' ) === 'string' : false
+				};
 			}
-
-			messageData = {
-				notes : notes ? notes.innerHTML : '',
-				indexh : slideIndices.h,
-				indexv : slideIndices.v,
-				indexf : slideIndices.f,
-				nextindexh : nextindexh,
-				nextindexv : nextindexv,
-				markdown : notes ? typeof notes.getAttribute( 'data-markdown' ) === 'string' : false
-			};
+			else if( eventType === 'fragmentshown' ) {
+				messageData = {
+					fragment : 'next'
+				};
+			}
+			else if( eventType === 'fragmenthidden' ) {
+				messageData = {
+					fragment : 'prev'
+				};
+			}
 
 			notesPopup.postMessage( JSON.stringify( messageData ), '*' );
 		}
 
 		// Navigate to the current slide when the notes are loaded
 		notesPopup.addEventListener( 'load', function( event ) {
-			post();
+			post('slidechanged');
 		}, false );
 	}
 
