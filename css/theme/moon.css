@@ -78,6 +78,16 @@ html * {
   background-color: transparent;
   box-shadow: none;
   margin: 0; }
+.reveal.git .lower {
+  text-transform: none; }
+.reveal.git .thanks {
+  font-size: 200px; }
+.reveal.git .contact {
+  font-size: 55px; }
+.reveal.git .slides-at {
+  font-size: 30px; }
+.reveal.git .hiring {
+  font-size: 50px; }
 
 /*********************************************
  * GLOBAL STYLES
